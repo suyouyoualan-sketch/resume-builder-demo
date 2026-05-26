@@ -21,6 +21,7 @@ export type ExperienceItem = {
   organization: string;
   location: string;
   positionTitle: string;
+  supervisor: string;
   dates: string;
   bullets: string;
 };
@@ -103,6 +104,7 @@ function hasAnyExperienceItem(item: ExperienceItem) {
     hasText(item.organization) ||
     hasText(item.location) ||
     hasText(item.positionTitle) ||
+    hasText(item.supervisor) ||
     hasText(item.dates) ||
     hasText(item.bullets)
   );
@@ -238,9 +240,14 @@ function renderExperienceItem(item: ExperienceItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
+  const supervisor = hasText(item.supervisor)
+    ? `Supervisor: ${text(item.supervisor)}`
+    : "";
+
   return `\\textbf{${organization}}${location}
 
 ${position}${dates}
+${supervisor}
 ${renderBulletList(item.bullets)}
 
 \\vspace{12pt}`;
@@ -318,7 +325,7 @@ export function generateLatex(data: ResumeData) {
     hasText(data.phone) ? text(data.phone) : "",
   ].filter(Boolean);
 
-return `\\documentclass[11pt]{article}
+  return `\\documentclass[11pt]{article}
 \\usepackage{graphicx}
 \\setlength{\\parindent}{0pt}
 \\usepackage{hyperref}
@@ -335,6 +342,8 @@ return `\\documentclass[11pt]{article}
     colorlinks=true,
     urlcolor=black
 }
+
+\\pagestyle{empty}
 
 \\begin{document}
 \\begin{center}

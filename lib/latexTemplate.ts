@@ -318,15 +318,21 @@ export function generateLatex(data: ResumeData) {
     hasText(data.phone) ? text(data.phone) : "",
   ].filter(Boolean);
 
-  return `\\documentclass[11pt]{article}
+return `\\documentclass[11pt]{article}
 \\usepackage{graphicx}
 \\setlength{\\parindent}{0pt}
 \\usepackage{hyperref}
 \\usepackage{enumitem}
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
+\\usepackage{fontspec}
+\\usepackage{xeCJK}
 \\usepackage[left=1.06cm,top=1.7cm,right=1.06cm,bottom=0.49cm]{geometry}
+
+\\setmainfont{Latin Modern Roman}
+\\setsansfont{Latin Modern Sans}
+\\setmonofont{Latin Modern Mono}
+\\setCJKmainfont{Noto Sans CJK SC}
+\\setCJKsansfont{Noto Sans CJK SC}
+\\setCJKmonofont{Noto Sans Mono CJK SC}
 
 \\hypersetup{
     colorlinks=true,
@@ -335,7 +341,7 @@ export function generateLatex(data: ResumeData) {
 
 \\begin{document}
 \\begin{center}
-    {\\LARGE \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}\\\\[-2pt]
+    {\\LARGE \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}}\\\\[-2pt]
     \\hrulefill
 \\end{center}
 

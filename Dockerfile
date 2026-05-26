@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-xetex \
     texlive-lang-cjk \
     fonts-noto-cjk \
-    fonts-noto-cjk-extra \
     lmodern \
     && rm -rf /var/lib/apt/lists/*
 

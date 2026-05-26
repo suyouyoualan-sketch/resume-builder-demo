@@ -127,7 +127,7 @@ const exampleForm: ResumeForm = {
     studyAbroadSchool: "Study Abroad, University of Oxford",
     studyAbroadLocation: "Oxford, United Kingdom",
     studyAbroadCoursework: "economic history, political theory, and statistics",
-    studyAbroadDates: "Jan 2026 – Jun 2026",
+    studyAbroadDates: "Jan 2026 - Jun 2026",
 
     highSchoolName: "",
     highSchoolLocation: "",
@@ -139,7 +139,7 @@ const exampleForm: ResumeForm = {
       organization: "Crimson Analytics Lab",
       location: "Cambridge, MA",
       positionTitle: "Research Assistant",
-      dates: "Sep 2025 – Present",
+      dates: "Sep 2025 - Present",
       bullets:
         "Analyzed 50,000+ transaction records using Python and SQL to identify consumer behavior trends\nBuilt automated data-cleaning scripts that reduced weekly processing time by 40%\nPresented findings to a 6-person research team through concise technical memos",
     },
@@ -147,7 +147,7 @@ const exampleForm: ResumeForm = {
       organization: "Northstar Ventures",
       location: "Remote",
       positionTitle: "Summer Analyst",
-      dates: "Jun 2025 – Aug 2025",
+      dates: "Jun 2025 - Aug 2025",
       bullets:
         "Evaluated 30+ early-stage startups across fintech, education technology, and AI infrastructure\nPrepared market maps and competitor analyses for investment committee discussions\nCreated financial summaries using Excel to compare revenue models and growth assumptions",
     },
@@ -157,7 +157,7 @@ const exampleForm: ResumeForm = {
       organization: "Undergraduate Consulting Club",
       location: "Cambridge, MA",
       role: "Project Lead",
-      dates: "Sep 2024 – Present",
+      dates: "Sep 2024 - Present",
       bullets:
         "Led a 5-student team advising a local nonprofit on donor engagement strategy\nCoordinated weekly client meetings and delivered final recommendations to senior management",
     },
@@ -529,8 +529,8 @@ export default function Home() {
 
             <InputField
               label="Study Abroad Dates"
-              helperText="Example: Jan 2026 – Jun 2026"
-              placeholder="Month Year – Month Year"
+              helperText="Example: Jan 2026 - Jun 2026"
+              placeholder="Month Year - Month Year"
               value={form.education.studyAbroadDates}
               onChange={(value) =>
                 updateEducationField("studyAbroadDates", value)
@@ -628,8 +628,8 @@ export default function Home() {
 
                 <InputField
                   label="Dates"
-                  helperText="Example: Jun 2025 – Aug 2025"
-                  placeholder="Month Year – Month Year"
+                  helperText="Example: Jun 2025 - Aug 2025"
+                  placeholder="Month Year - Month Year"
                   value={item.dates}
                   onChange={(value) =>
                     updateExperienceField(index, "dates", value)
@@ -710,8 +710,8 @@ Designed an ATS-friendly resume generation pipeline for international students`}
 
                 <InputField
                   label="Dates"
-                  helperText="Example: Sep 2024 – Present"
-                  placeholder="Month Year – Month Year"
+                  helperText="Example: Sep 2024 - Present"
+                  placeholder="Month Year - Month Year"
                   value={item.dates}
                   onChange={(value) =>
                     updateLeadershipField(index, "dates", value)

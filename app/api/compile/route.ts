@@ -9,7 +9,7 @@ import { generateLatex } from "@/lib/latexTemplate";
 const execFileAsync = promisify(execFile);
 
 const MAX_BODY_SIZE = 50_000; // 50 KB is enough for a resume
-const LATEX_TIMEOUT_MS = 10_000; // 10 seconds
+const LATEX_TIMEOUT_MS = 30_000; // 30 seconds
 
 export async function POST(req: Request) {
   let dir: string | null = null;

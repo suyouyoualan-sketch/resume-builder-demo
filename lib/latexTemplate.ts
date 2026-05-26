@@ -137,7 +137,7 @@ function renderBulletList(input: string | undefined) {
 
   if (lines.length === 0) return "";
 
-  return `\\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+  return `\\begin{itemize}[label=-, leftmargin=*, noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
 ${lines.map((line) => `    \\item ${escapeLatex(line)}`).join("\n")}
 \\end{itemize}`;
 }
@@ -335,7 +335,7 @@ export function generateLatex(data: ResumeData) {
 
 \\begin{document}
 \\begin{center}
-    \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}\\\\
+    {\\LARGE \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}\\\\[-2pt]
     \\hrulefill
 \\end{center}
 

@@ -240,14 +240,17 @@ function renderExperienceItem(item: ExperienceItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  const supervisor = hasText(item.supervisor)
-    ? `Supervisor: ${text(item.supervisor)}`
+  const roleLine =
+    position || dates ? `${position}${dates}\\\\` : "";
+
+  const supervisorLine = hasText(item.supervisor)
+    ? `Supervisor: ${text(item.supervisor)}\\\\`
     : "";
 
   return `\\textbf{${organization}}${location}
 
-${position}${dates}
-${supervisor}
+${roleLine}
+${supervisorLine}
 ${renderBulletList(item.bullets)}
 
 \\vspace{12pt}`;

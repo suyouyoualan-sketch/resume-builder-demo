@@ -178,9 +178,9 @@ function renderEducationSection(education: EducationData) {
 
   const mainEducationLines = [
     `\\textbf{${university.toUpperCase()}}${universityLocation}\\\\`,
-    degreeLine,
-    thesisLine,
-    courseworkLine,
+    degreeLine ? `${degreeLine}\\\\` : "",
+    thesisLine ? `${thesisLine}\\\\` : "",
+    courseworkLine ? `${courseworkLine}\\\\` : "",
   ]
     .filter((line) => line.trim().length > 0)
     .join("\n");
@@ -196,7 +196,7 @@ function renderEducationSection(education: EducationData) {
       }\\\\
 ${
   hasText(education.studyAbroadCoursework)
-    ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}`
+    ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}\\\\`
     : ""
 }${
         hasText(education.studyAbroadDates)
@@ -215,7 +215,7 @@ ${
           ? ` \\hfill ${text(education.highSchoolLocation)}`
           : ""
       }\\\\
-${text(education.highSchoolDetails)}${
+${text(education.highSchoolDetails)}\\\\${
         hasText(education.highSchoolGraduationDate)
           ? ` \\hfill ${text(education.highSchoolGraduationDate)}`
           : ""

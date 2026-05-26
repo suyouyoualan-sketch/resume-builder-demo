@@ -389,6 +389,35 @@ export default function Home() {
     setIsPreviewOutdated(Boolean(pdfUrl));
   }
 
+  function getFormWarnings() {
+    const warnings: string[] = [];
+
+    if (!form.name.trim()) {
+      warnings.push("Full name is empty.");
+    }
+
+    if (!form.email.trim()) {
+      warnings.push("Email is empty.");
+    }
+
+    if (!form.education.university.trim()) {
+      warnings.push("University is empty.");
+    }
+
+    const hasExperience = form.experience.some(
+      (item) =>
+        item.organization.trim() ||
+        item.positionTitle.trim() ||
+        item.bullets.trim()
+    );
+
+    if (!hasExperience) {
+      warnings.push("Experience section is empty.");
+    }
+
+    return warnings;
+  }
+
   function clearForm() {
     setForm(emptyForm);
     setPdfUrl(null);
@@ -400,6 +429,20 @@ export default function Home() {
 
   async function generatePDF() {
     let progressTimer: ReturnType<typeof setInterval> | null = null;
+
+    const warnings = getFormWarnings();
+
+    if (warnings.length > 0) {
+      const shouldContinue = confirm(
+        `Some important fields are missing:\n\n${warnings.join(
+          "\n"
+        )}\n\nDo you still want to generate the PDF?`
+      );
+
+      if (!shouldContinue) {
+        return;
+      }
+    }
 
     try {
       setIsGenerating(true);

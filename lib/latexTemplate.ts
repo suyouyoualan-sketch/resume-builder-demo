@@ -75,10 +75,16 @@ function text(input: string | undefined) {
   return escapeLatex(input?.trim() || "");
 }
 
-function renderCenteredSection(title: string) {
-  return `\\begin{center}
-    \\textbf{${title}}
-\\end{center}`;
+function renderSectionTitle(title: string) {
+  return `
+\\vspace{8pt}
+
+{\\large\\textbf{${title}}}
+
+\\vspace{2pt}
+\\hrule
+\\vspace{6pt}
+`;
 }
 
 function hasAnyEducationStudyAbroad(education: EducationData) {
@@ -139,7 +145,7 @@ function renderBulletList(input: string | undefined) {
 
   if (lines.length === 0) return "";
 
-  return `\\begin{itemize}[label=-, leftmargin=*, noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+  return `\\begin{itemize}[leftmargin=*, noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
 ${lines.map((line) => `    \\item ${escapeLatex(line)}`).join("\n")}
 \\end{itemize}`;
 }
@@ -171,24 +177,23 @@ function renderEducationSection(education: EducationData) {
     : "";
 
   const mainEducationLines = [
-    `\\textbf{${university}}${universityLocation}`,
+    `\\textbf{${university.toUpperCase()}}${universityLocation}\\\\`,
     degreeLine,
     thesisLine,
     courseworkLine,
   ]
     .filter((line) => line.trim().length > 0)
-    .join("\n\n");
+    .join("\n");
 
   const studyAbroadSection = hasAnyEducationStudyAbroad(education)
     ? `
-\\vspace{12pt}
+\\vspace{8pt}
 
-\\textbf{${text(education.studyAbroadSchool) || "Study Abroad"}}${
+\\textbf{${text(education.studyAbroadSchool).toUpperCase() || "STUDY ABROAD"}}${
         hasText(education.studyAbroadLocation)
           ? ` \\hfill ${text(education.studyAbroadLocation)}`
           : ""
-      }
-
+      }\\\\
 ${
   hasText(education.studyAbroadCoursework)
     ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}`
@@ -203,14 +208,13 @@ ${
 
   const highSchoolSection = hasAnyEducationHighSchool(education)
     ? `
-\\vspace{12pt}
+\\vspace{8pt}
 
-\\textbf{${text(education.highSchoolName) || "High School"}}${
+\\textbf{${text(education.highSchoolName).toUpperCase() || "HIGH SCHOOL"}}${
         hasText(education.highSchoolLocation)
           ? ` \\hfill ${text(education.highSchoolLocation)}`
           : ""
-      }
-
+      }\\\\
 ${text(education.highSchoolDetails)}${
         hasText(education.highSchoolGraduationDate)
           ? ` \\hfill ${text(education.highSchoolGraduationDate)}`
@@ -219,12 +223,12 @@ ${text(education.highSchoolDetails)}${
 `
     : "";
 
-  return `${renderCenteredSection("Education")}
+  return `${renderSectionTitle("EDUCATION")}
 ${mainEducationLines}
 ${studyAbroadSection}
 ${highSchoolSection}
 
-\\vspace{12pt}`;
+\\vspace{8pt}`;
 }
 
 function renderExperienceItem(item: ExperienceItem) {
@@ -240,20 +244,18 @@ function renderExperienceItem(item: ExperienceItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  const roleLine =
-    position || dates ? `${position}${dates}\\\\` : "";
+  const roleLine = position || dates ? `${position}${dates}\\\\` : "";
 
   const supervisorLine = hasText(item.supervisor)
     ? `Supervisor: ${text(item.supervisor)}\\\\`
     : "";
 
-  return `\\textbf{${organization}}${location}
-
+  return `\\textbf{${organization.toUpperCase()}}${location}\\\\
 ${roleLine}
 ${supervisorLine}
 ${renderBulletList(item.bullets)}
 
-\\vspace{12pt}`;
+\\vspace{8pt}`;
 }
 
 function renderExperienceSection(experience: ExperienceItem[]) {
@@ -261,8 +263,8 @@ function renderExperienceSection(experience: ExperienceItem[]) {
 
   if (validItems.length === 0) return "";
 
-  return `${renderCenteredSection("Experience")}
-${validItems.map((item) => renderExperienceItem(item)).join("\n\n")}`;
+  return `${renderSectionTitle("EXPERIENCE")}
+${validItems.map((item) => renderExperienceItem(item)).join("\n")}`;
 }
 
 function renderLeadershipItem(item: LeadershipItem) {
@@ -276,12 +278,13 @@ function renderLeadershipItem(item: LeadershipItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  return `\\textbf{${organization}}${location}
+  const roleLine = role || dates ? `${role}${dates}` : "";
 
-${role}${dates}
+  return `\\textbf{${organization.toUpperCase()}}${location}\\\\
+${roleLine}
 ${renderBulletList(item.bullets)}
 
-\\vspace{12pt}`;
+\\vspace{8pt}`;
 }
 
 function renderLeadershipSection(leadership: LeadershipItem[]) {
@@ -289,9 +292,8 @@ function renderLeadershipSection(leadership: LeadershipItem[]) {
 
   if (validItems.length === 0) return "";
 
-  return `${renderCenteredSection("Leadership \\& Activities")}
-
-${validItems.map((item) => renderLeadershipItem(item)).join("\n\n")}`;
+  return `${renderSectionTitle("LEADERSHIP \\& ACTIVITIES")}
+${validItems.map((item) => renderLeadershipItem(item)).join("\n")}`;
 }
 
 function renderSkillsSection(skills: SkillsData) {
@@ -301,7 +303,9 @@ function renderSkillsSection(skills: SkillsData) {
     hasText(skills.technical)
       ? `\\textbf{Technical:} ${text(skills.technical)}`
       : "",
-    hasText(skills.language) ? `\\textbf{Language:} ${text(skills.language)}` : "",
+    hasText(skills.language)
+      ? `\\textbf{Language:} ${text(skills.language)}`
+      : "",
     hasText(skills.laboratory)
       ? `\\textbf{Laboratory:} ${text(skills.laboratory)}`
       : "",
@@ -310,9 +314,8 @@ function renderSkillsSection(skills: SkillsData) {
       : "",
   ].filter(Boolean);
 
-  return `${renderCenteredSection("Skills \\& Interests")}
-
-${lines.join("\n\n")}`;
+  return `${renderSectionTitle("SKILLS \\& INTERESTS")}
+${lines.join("\\\\\n")}`;
 }
 
 export function generateLatex(data: ResumeData) {
@@ -349,16 +352,16 @@ export function generateLatex(data: ResumeData) {
 \\pagestyle{empty}
 
 \\begin{document}
+
 \\begin{center}
-    {\\LARGE \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}}\\\\[-2pt]
-    \\hrulefill
+    {\\LARGE \\textbf{${hasText(data.name) ? text(data.name) : "Firstname Lastname"}}}
 \\end{center}
 
 \\begin{center}
-    ${contactParts.join(" \\textbullet{} ")}
+    ${contactParts.join(" | ")}
 \\end{center}
 
-\\vspace{0.5pt}
+\\vspace{2pt}
 
 ${renderEducationSection(education)}
 

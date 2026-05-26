@@ -330,9 +330,6 @@ return `\\documentclass[11pt]{article}
 \\setmainfont{Latin Modern Roman}
 \\setsansfont{Latin Modern Sans}
 \\setmonofont{Latin Modern Mono}
-\\setCJKmainfont{Noto Sans CJK SC}
-\\setCJKsansfont{Noto Sans CJK SC}
-\\setCJKmonofont{Noto Sans Mono CJK SC}
 
 \\hypersetup{
     colorlinks=true,

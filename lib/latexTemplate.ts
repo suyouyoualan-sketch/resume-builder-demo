@@ -2,6 +2,8 @@ export type EducationData = {
   university: string;
   universityLocation: string;
   degree: string;
+  major: string;
+  gpa: string;
   graduationDate: string;
   thesis: string;
   relevantCoursework: string;
@@ -159,14 +161,20 @@ function renderEducationSection(education: EducationData) {
     ? ` \\hfill ${text(education.universityLocation)}`
     : "";
 
+  const degreeMajorText = [text(education.degree), text(education.major)]
+    .filter((part) => part.trim().length > 0)
+    .join(" in ");
+
   const degreeLine = [
-    hasText(education.degree) ? text(education.degree) : "",
+    degreeMajorText,
     hasText(education.graduationDate)
       ? `\\hfill ${text(education.graduationDate)}`
       : "",
   ]
     .filter(Boolean)
     .join(" ");
+
+  const gpaLine = hasText(education.gpa) ? `GPA: ${text(education.gpa)}` : "";
 
   const thesisLine = hasText(education.thesis)
     ? `Thesis: ${text(education.thesis)}`
@@ -179,6 +187,7 @@ function renderEducationSection(education: EducationData) {
   const mainEducationLines = [
     `\\textbf{${university.toUpperCase()}}${universityLocation}\\\\`,
     degreeLine ? `${degreeLine}\\\\` : "",
+    gpaLine ? `${gpaLine}\\\\` : "",
     thesisLine ? `${thesisLine}\\\\` : "",
     courseworkLine ? `${courseworkLine}\\\\` : "",
   ]

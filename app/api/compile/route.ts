@@ -57,9 +57,9 @@ export async function POST(req: Request) {
     const latex = generateLatex(data);
     await writeFile(texPath, latex, "utf8");
 
-    // 4. Run pdflatex safely without shell command string
+    // 4. Run xelatex safely without shell command string
     await execFileAsync(
-      "pdflatex",
+      "xelatex",
       [
         "-interaction=nonstopmode",
         "-halt-on-error",

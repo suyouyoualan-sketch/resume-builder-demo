@@ -388,12 +388,12 @@ export default function Home() {
             Build a Harvard-style ATS-friendly LaTeX resume.
           </p>
 
-          <p className="mb-2">
+          <p className="mb-2 text-gray-400">
             Supports English, Chinese, Korean, and Japanese input. For best ATS
             compatibility, we recommend writing your resume mainly in English.
           </p>
 
-          <p className="mb-3 font-medium text-gray-800">
+          <p className="mb-3 font-medium text-gray-400">
             Beta version: please do not enter sensitive personal information during
             testing.
           </p>

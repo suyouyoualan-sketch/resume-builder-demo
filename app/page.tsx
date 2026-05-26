@@ -26,6 +26,7 @@ type ExperienceItem = {
   organization: string;
   location: string;
   positionTitle: string;
+  supervisor: string;
   dates: string;
   bullets: string;
 };
@@ -63,6 +64,7 @@ const emptyExperience: ExperienceItem = {
   organization: "",
   location: "",
   positionTitle: "",
+  supervisor: "",
   dates: "",
   bullets: "",
 };
@@ -136,17 +138,19 @@ const exampleForm: ResumeForm = {
   },
   experience: [
     {
-      organization: "Crimson Analytics Lab",
-      location: "Cambridge, MA",
-      positionTitle: "Research Assistant",
-      dates: "Sep 2025 - Present",
+      organization: "Three Languages of Quantum Mechanics (URECA Programme)",
+      location: "Singapore",
+      positionTitle: "Research Student",
+      supervisor: "Prof. François Gay-Balmaz",
+      dates: "May 2026 - Aug 2026",
       bullets:
-        "Analyzed 50,000+ transaction records using Python and SQL to identify consumer behavior trends\nBuilt automated data-cleaning scripts that reduced weekly processing time by 40%\nPresented findings to a 6-person research team through concise technical memos",
+        "Studied the equivalence between the Schrödinger, Heisenberg, and interaction pictures\nReviewed mathematical formulations of quantum mechanics using operators, states, and time evolution\nPrepared structured notes and derivations for a research-style undergraduate project",
     },
     {
       organization: "Northstar Ventures",
       location: "Remote",
       positionTitle: "Summer Analyst",
+      supervisor: "",
       dates: "Jun 2025 - Aug 2025",
       bullets:
         "Evaluated 30+ early-stage startups across fintech, education technology, and AI infrastructure\nPrepared market maps and competitor analyses for investment committee discussions\nCreated financial summaries using Excel to compare revenue models and growth assumptions",
@@ -290,6 +294,29 @@ export default function Home() {
     }));
   }
 
+  function moveExperience(index: number, direction: "up" | "down") {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextExperience = [...previousForm.experience];
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (targetIndex < 0 || targetIndex >= nextExperience.length) {
+        return previousForm;
+      }
+
+      [nextExperience[index], nextExperience[targetIndex]] = [
+        nextExperience[targetIndex],
+        nextExperience[index],
+      ];
+
+      return {
+        ...previousForm,
+        experience: nextExperience,
+      };
+    });
+  }
+
   function addLeadership() {
     markPreviewOutdated();
 
@@ -309,6 +336,29 @@ export default function Home() {
           ? previousForm.leadership.filter((_, itemIndex) => itemIndex !== index)
           : previousForm.leadership,
     }));
+  }
+
+  function moveLeadership(index: number, direction: "up" | "down") {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextLeadership = [...previousForm.leadership];
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (targetIndex < 0 || targetIndex >= nextLeadership.length) {
+        return previousForm;
+      }
+
+      [nextLeadership[index], nextLeadership[targetIndex]] = [
+        nextLeadership[targetIndex],
+        nextLeadership[index],
+      ];
+
+      return {
+        ...previousForm,
+        leadership: nextLeadership,
+      };
+    });
   }
 
   function loadExample() {
@@ -603,24 +653,43 @@ export default function Home() {
                 key={index}
                 className="border border-gray-300 rounded-xl p-4 bg-gray-100 space-y-4"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <h3 className="font-semibold text-gray-800">
                     Experience {index + 1}
                   </h3>
 
-                  {form.experience.length > 1 && (
+                  <div className="flex flex-wrap gap-2">
                     <button
-                      onClick={() => removeExperience(index)}
-                      className="text-sm text-red-600 hover:text-red-800"
+                      onClick={() => moveExperience(index, "up")}
+                      disabled={index === 0}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
                     >
-                      Remove
+                      ↑ Up
                     </button>
-                  )}
+
+                    <button
+                      onClick={() => moveExperience(index, "down")}
+                      disabled={index === form.experience.length - 1}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↓ Down
+                    </button>
+
+                    {form.experience.length > 1 && (
+                      <button
+                        onClick={() => removeExperience(index)}
+                        className="text-sm text-red-600 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <InputField
-                  label="Organization"
-                  placeholder="Organization"
+                  label="Organization / Project / Programme"
+                  helperText="For research projects, you can enter the project title here. Example: Three Languages of Quantum Mechanics (URECA Programme)."
+                  placeholder="Organization, Project, or Programme"
                   value={item.organization}
                   onChange={(value) =>
                     updateExperienceField(index, "organization", value)
@@ -637,11 +706,21 @@ export default function Home() {
                 />
 
                 <InputField
-                  label="Position Title"
-                  placeholder="Position Title"
+                  label="Role / Position"
+                  placeholder="Research Student, Summer Analyst, Project Lead"
                   value={item.positionTitle}
                   onChange={(value) =>
                     updateExperienceField(index, "positionTitle", value)
+                  }
+                />
+
+                <InputField
+                  label="Supervisor / Mentor"
+                  helperText="Optional. Useful for research projects, URECA, FYP, lab work, or summer research."
+                  placeholder="Prof. Name or Mentor Name"
+                  value={item.supervisor}
+                  onChange={(value) =>
+                    updateExperienceField(index, "supervisor", value)
                   }
                 />
 
@@ -685,19 +764,37 @@ Designed an ATS-friendly resume generation pipeline for international students`}
                 key={index}
                 className="border border-gray-300 rounded-xl p-4 bg-gray-100 space-y-4"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <h3 className="font-semibold text-gray-800">
                     Leadership {index + 1}
                   </h3>
 
-                  {form.leadership.length > 1 && (
+                  <div className="flex flex-wrap gap-2">
                     <button
-                      onClick={() => removeLeadership(index)}
-                      className="text-sm text-red-600 hover:text-red-800"
+                      onClick={() => moveLeadership(index, "up")}
+                      disabled={index === 0}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
                     >
-                      Remove
+                      ↑ Up
                     </button>
-                  )}
+
+                    <button
+                      onClick={() => moveLeadership(index, "down")}
+                      disabled={index === form.leadership.length - 1}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↓ Down
+                    </button>
+
+                    {form.leadership.length > 1 && (
+                      <button
+                        onClick={() => removeLeadership(index)}
+                        className="text-sm text-red-600 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <InputField

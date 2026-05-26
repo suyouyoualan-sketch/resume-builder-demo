@@ -194,6 +194,16 @@ function renderEducationSection(education: EducationData) {
     .filter((line) => line.trim().length > 0)
     .join("\n");
 
+  const studyAbroadCourseworkLine = hasText(education.studyAbroadCoursework)
+    ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}${
+        hasText(education.studyAbroadDates)
+          ? ` \\hfill ${text(education.studyAbroadDates)}`
+          : ""
+      }`
+    : hasText(education.studyAbroadDates)
+      ? `\\hfill ${text(education.studyAbroadDates)}`
+      : "";
+
   const studyAbroadSection = hasAnyEducationStudyAbroad(education)
     ? `
 \\vspace{8pt}
@@ -203,15 +213,7 @@ function renderEducationSection(education: EducationData) {
           ? ` \\hfill ${text(education.studyAbroadLocation)}`
           : ""
       }\\\\
-${
-  hasText(education.studyAbroadCoursework)
-    ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}\\\\`
-    : ""
-}${
-        hasText(education.studyAbroadDates)
-          ? ` \\hfill ${text(education.studyAbroadDates)}`
-          : ""
-      }
+${studyAbroadCourseworkLine}
 `
     : "";
 

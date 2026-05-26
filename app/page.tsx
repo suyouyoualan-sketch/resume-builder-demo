@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
 type EducationData = {
@@ -115,6 +115,8 @@ const emptyForm: ResumeForm = {
   },
 };
 
+const STORAGE_KEY = "resume-builder-form-data";
+
 const exampleForm: ResumeForm = {
   name: "Alex Chen",
   email: "alex.chen@college.edu",
@@ -182,6 +184,21 @@ const exampleForm: ResumeForm = {
 
 export default function Home() {
   const [form, setForm] = useState<ResumeForm>(emptyForm);
+  useEffect(() => {
+    const savedForm = localStorage.getItem(STORAGE_KEY);
+
+    if (savedForm) {
+      try {
+        setForm(JSON.parse(savedForm));
+      } catch (error) {
+        console.error("Failed to load saved form:", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+  }, [form]);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -377,6 +394,8 @@ export default function Home() {
     setPdfUrl(null);
     setIsPreviewOutdated(false);
     setProgress(0);
+
+    localStorage.removeItem(STORAGE_KEY);
   }
 
   async function generatePDF() {
@@ -449,7 +468,11 @@ export default function Home() {
             compatibility, we recommend writing your resume mainly in English.
           </p>
 
-          <p className="mb-3 font-medium text-gray-400">
+          <p className="mb-3 text-sm text-gray-400">
+            Your progress is automatically saved in this browser.
+          </p>
+
+          <p className="mb-3 font-medium text-red-400">
             Beta version: please do not enter sensitive personal information during
             testing.
           </p>

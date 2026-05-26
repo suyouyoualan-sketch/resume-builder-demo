@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-fonts-recommended \
     texlive-xetex \
     texlive-lang-cjk \
+    texlive-lang-chinese \
     fonts-noto-cjk \
     lmodern \
     && rm -rf /var/lib/apt/lists/*

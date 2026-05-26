@@ -7,6 +7,8 @@ type EducationData = {
   university: string;
   universityLocation: string;
   degree: string;
+  major: string;
+  gpa: string;
   graduationDate: string;
   thesis: string;
   relevantCoursework: string;
@@ -87,6 +89,8 @@ const emptyForm: ResumeForm = {
     university: "",
     universityLocation: "",
     degree: "",
+    major: "",
+    gpa: "",
     graduationDate: "",
     thesis: "",
     relevantCoursework: "",
@@ -120,7 +124,9 @@ const exampleForm: ResumeForm = {
   education: {
     university: "Harvard University",
     universityLocation: "Cambridge, MA",
-    degree: "B.A. in Economics, Secondary in Computer Science. GPA: 3.85/4.00",
+    degree: "B.A.",
+    major: "Economics, Secondary in Computer Science",
+    gpa: "3.85/4.00",
     graduationDate: "May 2027",
     thesis: "Market Design for Digital Platforms",
     relevantCoursework:
@@ -530,11 +536,27 @@ export default function Home() {
             />
 
             <InputField
-              label="Degree, Concentration, GPA"
-              helperText="Example: B.Sc. in Physics and Mathematics. GPA: 4.80/5.00"
-              placeholder="Degree, Concentration. GPA: 3.90/4.00"
+              label="Degree"
+              helperText="Example: B.Sc., B.A., M.Sc."
+              placeholder="B.Sc."
               value={form.education.degree}
               onChange={(value) => updateEducationField("degree", value)}
+            />
+
+            <InputField
+              label="Major / Concentration"
+              helperText="Example: Physics and Mathematics"
+              placeholder="Physics and Mathematics"
+              value={form.education.major}
+              onChange={(value) => updateEducationField("major", value)}
+            />
+
+            <InputField
+              label="GPA"
+              helperText="Optional. Example: 4.80/5.00 or 3.85/4.00"
+              placeholder="4.80/5.00"
+              value={form.education.gpa}
+              onChange={(value) => updateEducationField("gpa", value)}
             />
 
             <InputField

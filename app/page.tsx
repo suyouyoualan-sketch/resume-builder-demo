@@ -1018,21 +1018,21 @@ Led weekly planning meetings and managed club communications`}
               <div className="flex gap-2">
                 <button
                   onClick={zoomOutPreview}
-                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                 >
-                  −
+                  -
                 </button>
 
                 <button
                   onClick={resetPreviewZoom}
-                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                 >
                   Reset
                 </button>
 
                 <button
                   onClick={zoomInPreview}
-                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                 >
                   +
                 </button>

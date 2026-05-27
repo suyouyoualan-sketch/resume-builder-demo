@@ -203,6 +203,7 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isPreviewOutdated, setIsPreviewOutdated] = useState(false);
+  const [previewZoom, setPreviewZoom] = useState(1);
 
   const downloadFileName = useMemo(() => {
     const baseName = form.name.trim() || "resume";
@@ -396,6 +397,18 @@ export default function Home() {
     setProgress(0);
 
     localStorage.removeItem(STORAGE_KEY);
+  }
+
+  function zoomInPreview() {
+    setPreviewZoom((zoom) => Math.min(zoom + 0.1, 1.8));
+  }
+
+  function zoomOutPreview() {
+    setPreviewZoom((zoom) => Math.max(zoom - 0.1, 0.6));
+  }
+
+  function resetPreviewZoom() {
+    setPreviewZoom(1);
   }
 
   async function generatePDF() {
@@ -994,12 +1007,51 @@ Led weekly planning meetings and managed club communications`}
         </div>
       </section>
 
-      <section className="hidden lg:block bg-white rounded-xl shadow-sm overflow-hidden h-[95vh]">
+      <section className="hidden lg:flex flex-col bg-white rounded-xl shadow-sm overflow-hidden h-[95vh]">
         {pdfUrl ? (
-          <iframe
-            src={`${pdfUrl}#toolbar=0`}
-            className="w-full h-full"
-          />
+          <>
+            <div className="flex items-center justify-between gap-3 px-4 py-2 border-b bg-gray-100">
+              <span className="text-sm text-gray-600">
+                Preview zoom: {Math.round(previewZoom * 100)}%
+              </span>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={zoomOutPreview}
+                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                >
+                  −
+                </button>
+
+                <button
+                  onClick={resetPreviewZoom}
+                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                >
+                  Reset
+                </button>
+
+                <button
+                  onClick={zoomInPreview}
+                  className="text-sm border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-50"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-auto bg-gray-300">
+              <iframe
+                src={`${pdfUrl}#toolbar=0`}
+                className="border-0 bg-white"
+                style={{
+                  width: `${100 / previewZoom}%`,
+                  height: `${100 / previewZoom}%`,
+                  transform: `scale(${previewZoom})`,
+                  transformOrigin: "top left",
+                }}
+              />
+            </div>
+          </>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400 text-lg">
             PDF preview will appear here

@@ -1,22 +1,18 @@
-export type EducationData = {
-  university: string;
-  universityLocation: string;
+export type EducationItem = {
+  school: string;
+  location: string;
   degree: string;
   major: string;
   gpa: string;
-  graduationDate: string;
+  dates: string;
   thesis: string;
   relevantCoursework: string;
+};
 
-  studyAbroadSchool: string;
-  studyAbroadLocation: string;
-  studyAbroadCoursework: string;
-  studyAbroadDates: string;
-
-  highSchoolName: string;
-  highSchoolLocation: string;
-  highSchoolDetails: string;
-  highSchoolGraduationDate: string;
+export type HonorAwardItem = {
+  organization: string;
+  dates: string;
+  bullets: string;
 };
 
 export type ExperienceItem = {
@@ -49,7 +45,8 @@ export type ResumeData = {
   phone: string;
   address: string;
   cityStateZip: string;
-  education: EducationData;
+  education: EducationItem[];
+  honorAwards?: HonorAwardItem[];
   experience: ExperienceItem[];
   leadership: LeadershipItem[];
   skills: SkillsData;
@@ -89,22 +86,21 @@ function renderSectionTitle(title: string) {
 `;
 }
 
-function hasAnyEducationStudyAbroad(education: EducationData) {
+function hasAnyEducationItem(item: EducationItem) {
   return (
-    hasText(education.studyAbroadSchool) ||
-    hasText(education.studyAbroadLocation) ||
-    hasText(education.studyAbroadCoursework) ||
-    hasText(education.studyAbroadDates)
+    hasText(item.school) ||
+    hasText(item.location) ||
+    hasText(item.degree) ||
+    hasText(item.major) ||
+    hasText(item.gpa) ||
+    hasText(item.dates) ||
+    hasText(item.thesis) ||
+    hasText(item.relevantCoursework)
   );
 }
 
-function hasAnyEducationHighSchool(education: EducationData) {
-  return (
-    hasText(education.highSchoolName) ||
-    hasText(education.highSchoolLocation) ||
-    hasText(education.highSchoolDetails) ||
-    hasText(education.highSchoolGraduationDate)
-  );
+function hasAnyHonorAwardItem(item: HonorAwardItem) {
+  return hasText(item.organization) || hasText(item.dates) || hasText(item.bullets);
 }
 
 function hasAnyExperienceItem(item: ExperienceItem) {
@@ -152,40 +148,31 @@ ${lines.map((line) => `    \\item ${escapeLatex(line)}`).join("\n")}
 \\end{itemize}`;
 }
 
-function renderEducationSection(education: EducationData) {
-  const university = hasText(education.university)
-    ? text(education.university)
-    : "University Name";
+function renderEducationItem(item: EducationItem) {
+  const school = hasText(item.school) ? text(item.school) : "University Name";
+  const location = hasText(item.location) ? ` \\hfill ${text(item.location)}` : "";
 
-  const universityLocation = hasText(education.universityLocation)
-    ? ` \\hfill ${text(education.universityLocation)}`
-    : "";
-
-  const degreeMajorText = [text(education.degree), text(education.major)]
+  const degreeMajorText = [text(item.degree), text(item.major)]
     .filter((part) => part.trim().length > 0)
     .join(" in ");
 
   const degreeLine = [
     degreeMajorText,
-    hasText(education.graduationDate)
-      ? `\\hfill ${text(education.graduationDate)}`
-      : "",
+    hasText(item.dates) ? `\\hfill ${text(item.dates)}` : "",
   ]
     .filter(Boolean)
     .join(" ");
 
-  const gpaLine = hasText(education.gpa) ? `GPA: ${text(education.gpa)}` : "";
+  const gpaLine = hasText(item.gpa) ? `GPA: ${text(item.gpa)}` : "";
 
-  const thesisLine = hasText(education.thesis)
-    ? `Thesis: ${text(education.thesis)}`
+  const thesisLine = hasText(item.thesis) ? `Thesis: ${text(item.thesis)}` : "";
+
+  const courseworkLine = hasText(item.relevantCoursework)
+    ? `Relevant Coursework: ${text(item.relevantCoursework)}`
     : "";
 
-  const courseworkLine = hasText(education.relevantCoursework)
-    ? `Relevant Coursework: ${text(education.relevantCoursework)}`
-    : "";
-
-  const mainEducationLines = [
-    `\\textbf{${university.toUpperCase()}}${universityLocation}\\\\`,
+  return [
+    `\\textbf{${school.toUpperCase()}}${location}\\\\`,
     degreeLine ? `${degreeLine}\\\\` : "",
     gpaLine ? `${gpaLine}\\\\` : "",
     thesisLine ? `${thesisLine}\\\\` : "",
@@ -193,53 +180,39 @@ function renderEducationSection(education: EducationData) {
   ]
     .filter((line) => line.trim().length > 0)
     .join("\n");
+}
 
-  const studyAbroadCourseworkLine = hasText(education.studyAbroadCoursework)
-    ? `Study abroad coursework in ${text(education.studyAbroadCoursework)}${
-        hasText(education.studyAbroadDates)
-          ? ` \\hfill ${text(education.studyAbroadDates)}`
-          : ""
-      }`
-    : hasText(education.studyAbroadDates)
-      ? `\\hfill ${text(education.studyAbroadDates)}`
-      : "";
+function renderEducationSection(education: EducationItem[]) {
+  const validItems = education.filter(hasAnyEducationItem);
 
-  const studyAbroadSection = hasAnyEducationStudyAbroad(education)
-    ? `
-\\vspace{8pt}
-
-\\textbf{${text(education.studyAbroadSchool).toUpperCase() || "STUDY ABROAD"}}${
-        hasText(education.studyAbroadLocation)
-          ? ` \\hfill ${text(education.studyAbroadLocation)}`
-          : ""
-      }\\\\
-${studyAbroadCourseworkLine}
-`
-    : "";
-
-  const highSchoolSection = hasAnyEducationHighSchool(education)
-    ? `
-\\vspace{8pt}
-
-\\textbf{${text(education.highSchoolName).toUpperCase() || "HIGH SCHOOL"}}${
-        hasText(education.highSchoolLocation)
-          ? ` \\hfill ${text(education.highSchoolLocation)}`
-          : ""
-      }\\\\
-${text(education.highSchoolDetails)}\\\\${
-        hasText(education.highSchoolGraduationDate)
-          ? ` \\hfill ${text(education.highSchoolGraduationDate)}`
-          : ""
-      }
-`
-    : "";
+  if (validItems.length === 0) return "";
 
   return `${renderSectionTitle("EDUCATION")}
-${mainEducationLines}
-${studyAbroadSection}
-${highSchoolSection}
+${validItems.map((item) => renderEducationItem(item)).join("\n\\vspace{8pt}\n")}
 
 \\vspace{8pt}`;
+}
+
+function renderHonorAwardItem(item: HonorAwardItem) {
+  const organization = hasText(item.organization)
+    ? text(item.organization)
+    : "Issuing Organization";
+
+  const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
+
+  return `\\textbf{${organization.toUpperCase()}}${dates}\\\\
+${renderBulletList(item.bullets)}
+
+\\vspace{8pt}`;
+}
+
+function renderHonorAwardsSection(honorAwards: HonorAwardItem[]) {
+  const validItems = honorAwards.filter(hasAnyHonorAwardItem);
+
+  if (validItems.length === 0) return "";
+
+  return `${renderSectionTitle("HONOR \\& AWARDS")}
+${validItems.map((item) => renderHonorAwardItem(item)).join("\n")}`;
 }
 
 function renderExperienceItem(item: ExperienceItem) {
@@ -330,7 +303,8 @@ ${lines.join("\\\\\n")}`;
 }
 
 export function generateLatex(data: ResumeData) {
-  const education = data.education || ({} as EducationData);
+  const education = data.education || [];
+  const honorAwards = data.honorAwards || [];
   const experience = data.experience || [];
   const leadership = data.leadership || [];
   const skills = data.skills || ({} as SkillsData);
@@ -375,6 +349,8 @@ export function generateLatex(data: ResumeData) {
 \\vspace{2pt}
 
 ${renderEducationSection(education)}
+
+${renderHonorAwardsSection(honorAwards)}
 
 ${renderExperienceSection(experience)}
 

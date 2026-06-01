@@ -3,25 +3,21 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 
-type EducationData = {
-  university: string;
-  universityLocation: string;
+type EducationItem = {
+  school: string;
+  location: string;
   degree: string;
   major: string;
   gpa: string;
-  graduationDate: string;
+  dates: string;
   thesis: string;
   relevantCoursework: string;
+};
 
-  studyAbroadSchool: string;
-  studyAbroadLocation: string;
-  studyAbroadCoursework: string;
-  studyAbroadDates: string;
-
-  highSchoolName: string;
-  highSchoolLocation: string;
-  highSchoolDetails: string;
-  highSchoolGraduationDate: string;
+type HonorAwardItem = {
+  organization: string;
+  dates: string;
+  bullets: string;
 };
 
 type ExperienceItem = {
@@ -54,13 +50,31 @@ type ResumeForm = {
   phone: string;
   address: string;
   cityStateZip: string;
-  education: EducationData;
+  education: EducationItem[];
+  honorAwards: HonorAwardItem[];
   experience: ExperienceItem[];
   leadership: LeadershipItem[];
   skills: SkillsData;
 };
 
 type RootTextField = "name" | "email" | "phone" | "address" | "cityStateZip";
+
+const emptyEducation: EducationItem = {
+  school: "",
+  location: "",
+  degree: "",
+  major: "",
+  gpa: "",
+  dates: "",
+  thesis: "",
+  relevantCoursework: "",
+};
+
+const emptyHonorAward: HonorAwardItem = {
+  organization: "",
+  dates: "",
+  bullets: "",
+};
 
 const emptyExperience: ExperienceItem = {
   organization: "",
@@ -85,26 +99,8 @@ const emptyForm: ResumeForm = {
   phone: "",
   address: "",
   cityStateZip: "",
-  education: {
-    university: "",
-    universityLocation: "",
-    degree: "",
-    major: "",
-    gpa: "",
-    graduationDate: "",
-    thesis: "",
-    relevantCoursework: "",
-
-    studyAbroadSchool: "",
-    studyAbroadLocation: "",
-    studyAbroadCoursework: "",
-    studyAbroadDates: "",
-
-    highSchoolName: "",
-    highSchoolLocation: "",
-    highSchoolDetails: "",
-    highSchoolGraduationDate: "",
-  },
+  education: [{ ...emptyEducation }],
+  honorAwards: [{ ...emptyHonorAward }],
   experience: [{ ...emptyExperience }],
   leadership: [{ ...emptyLeadership }],
   skills: {
@@ -123,27 +119,37 @@ const exampleForm: ResumeForm = {
   phone: "+1 617 555 0123",
   address: "123 Harvard Yard",
   cityStateZip: "Cambridge, MA 02138",
-  education: {
-    university: "Harvard University",
-    universityLocation: "Cambridge, MA",
-    degree: "B.A.",
-    major: "Economics, Secondary in Computer Science",
-    gpa: "3.85/4.00",
-    graduationDate: "May 2027",
-    thesis: "Market Design for Digital Platforms",
-    relevantCoursework:
-      "Data Structures, Econometrics, Linear Algebra, Algorithms, Corporate Finance",
-
-    studyAbroadSchool: "Study Abroad, University of Oxford",
-    studyAbroadLocation: "Oxford, United Kingdom",
-    studyAbroadCoursework: "economic history, political theory, and statistics",
-    studyAbroadDates: "Jan 2026 - Jun 2026",
-
-    highSchoolName: "",
-    highSchoolLocation: "",
-    highSchoolDetails: "",
-    highSchoolGraduationDate: "",
-  },
+  education: [
+    {
+      school: "Harvard University",
+      location: "Cambridge, MA",
+      degree: "B.A.",
+      major: "Economics, Secondary in Computer Science",
+      gpa: "3.85/4.00",
+      dates: "May 2027",
+      thesis: "Market Design for Digital Platforms",
+      relevantCoursework:
+        "Data Structures, Econometrics, Linear Algebra, Algorithms, Corporate Finance",
+    },
+    {
+      school: "Study Abroad, University of Oxford",
+      location: "Oxford, United Kingdom",
+      degree: "Exchange Student",
+      major: "Economic History, Political Theory, and Statistics",
+      gpa: "",
+      dates: "Jan 2026 - Jun 2026",
+      thesis: "",
+      relevantCoursework: "",
+    },
+  ],
+  honorAwards: [
+    {
+      organization: "Harvard College",
+      dates: "2026",
+      bullets:
+        "John Harvard Scholarship for academic achievement\nDean's List, Fall 2025 and Spring 2026",
+    },
+  ],
   experience: [
     {
       organization: "Three Languages of Quantum Mechanics (URECA Programme)",
@@ -182,14 +188,116 @@ const exampleForm: ResumeForm = {
   },
 };
 
+function normalizeSavedForm(savedData: Partial<ResumeForm> & { education?: unknown }): ResumeForm {
+  const previousEducation = savedData.education as
+    | EducationItem[]
+    | {
+        university?: string;
+        universityLocation?: string;
+        degree?: string;
+        major?: string;
+        gpa?: string;
+        graduationDate?: string;
+        thesis?: string;
+        relevantCoursework?: string;
+        studyAbroadSchool?: string;
+        studyAbroadLocation?: string;
+        studyAbroadCoursework?: string;
+        studyAbroadDates?: string;
+        highSchoolName?: string;
+        highSchoolLocation?: string;
+        highSchoolDetails?: string;
+        highSchoolGraduationDate?: string;
+      }
+    | undefined;
+
+  let education: EducationItem[] = [{ ...emptyEducation }];
+
+  if (Array.isArray(previousEducation)) {
+    education = previousEducation.length > 0 ? previousEducation : [{ ...emptyEducation }];
+  } else if (previousEducation && typeof previousEducation === "object") {
+    education = [
+      {
+        school: previousEducation.university || "",
+        location: previousEducation.universityLocation || "",
+        degree: previousEducation.degree || "",
+        major: previousEducation.major || "",
+        gpa: previousEducation.gpa || "",
+        dates: previousEducation.graduationDate || "",
+        thesis: previousEducation.thesis || "",
+        relevantCoursework: previousEducation.relevantCoursework || "",
+      },
+    ];
+
+    if (
+      previousEducation.studyAbroadSchool ||
+      previousEducation.studyAbroadLocation ||
+      previousEducation.studyAbroadCoursework ||
+      previousEducation.studyAbroadDates
+    ) {
+      education.push({
+        school: previousEducation.studyAbroadSchool || "Study Abroad",
+        location: previousEducation.studyAbroadLocation || "",
+        degree: "Exchange Student",
+        major: previousEducation.studyAbroadCoursework || "",
+        gpa: "",
+        dates: previousEducation.studyAbroadDates || "",
+        thesis: "",
+        relevantCoursework: "",
+      });
+    }
+
+    if (
+      previousEducation.highSchoolName ||
+      previousEducation.highSchoolLocation ||
+      previousEducation.highSchoolDetails ||
+      previousEducation.highSchoolGraduationDate
+    ) {
+      education.push({
+        school: previousEducation.highSchoolName || "High School",
+        location: previousEducation.highSchoolLocation || "",
+        degree: "",
+        major: previousEducation.highSchoolDetails || "",
+        gpa: "",
+        dates: previousEducation.highSchoolGraduationDate || "",
+        thesis: "",
+        relevantCoursework: "",
+      });
+    }
+  }
+
+  return {
+    ...emptyForm,
+    ...savedData,
+    education,
+    honorAwards:
+      savedData.honorAwards && savedData.honorAwards.length > 0
+        ? savedData.honorAwards
+        : [{ ...emptyHonorAward }],
+    experience:
+      savedData.experience && savedData.experience.length > 0
+        ? savedData.experience
+        : [{ ...emptyExperience }],
+    leadership:
+      savedData.leadership && savedData.leadership.length > 0
+        ? savedData.leadership
+        : [{ ...emptyLeadership }],
+    skills: {
+      ...emptyForm.skills,
+      ...(savedData.skills || {}),
+    },
+  };
+}
+
 export default function Home() {
   const [form, setForm] = useState<ResumeForm>(emptyForm);
+
   useEffect(() => {
     const savedForm = localStorage.getItem(STORAGE_KEY);
 
     if (savedForm) {
       try {
-        setForm(JSON.parse(savedForm));
+        setForm(normalizeSavedForm(JSON.parse(savedForm)));
       } catch (error) {
         console.error("Failed to load saved form:", error);
       }
@@ -199,6 +307,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
   }, [form]);
+
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -229,16 +338,136 @@ export default function Home() {
     }));
   }
 
-  function updateEducationField(field: keyof EducationData, value: string) {
+  function updateEducationField(
+    index: number,
+    field: keyof EducationItem,
+    value: string
+  ) {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextEducation = [...previousForm.education];
+
+      nextEducation[index] = {
+        ...nextEducation[index],
+        [field]: value,
+      };
+
+      return {
+        ...previousForm,
+        education: nextEducation,
+      };
+    });
+  }
+
+  function addEducation() {
     markPreviewOutdated();
 
     setForm((previousForm) => ({
       ...previousForm,
-      education: {
-        ...previousForm.education,
-        [field]: value,
-      },
+      education: [...previousForm.education, { ...emptyEducation }],
     }));
+  }
+
+  function removeEducation(index: number) {
+    markPreviewOutdated();
+
+    setForm((previousForm) => ({
+      ...previousForm,
+      education:
+        previousForm.education.length > 1
+          ? previousForm.education.filter((_, itemIndex) => itemIndex !== index)
+          : previousForm.education,
+    }));
+  }
+
+  function moveEducation(index: number, direction: "up" | "down") {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextEducation = [...previousForm.education];
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (targetIndex < 0 || targetIndex >= nextEducation.length) {
+        return previousForm;
+      }
+
+      [nextEducation[index], nextEducation[targetIndex]] = [
+        nextEducation[targetIndex],
+        nextEducation[index],
+      ];
+
+      return {
+        ...previousForm,
+        education: nextEducation,
+      };
+    });
+  }
+
+  function updateHonorAwardField(
+    index: number,
+    field: keyof HonorAwardItem,
+    value: string
+  ) {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextHonorAwards = [...previousForm.honorAwards];
+
+      nextHonorAwards[index] = {
+        ...nextHonorAwards[index],
+        [field]: value,
+      };
+
+      return {
+        ...previousForm,
+        honorAwards: nextHonorAwards,
+      };
+    });
+  }
+
+  function addHonorAward() {
+    markPreviewOutdated();
+
+    setForm((previousForm) => ({
+      ...previousForm,
+      honorAwards: [...previousForm.honorAwards, { ...emptyHonorAward }],
+    }));
+  }
+
+  function removeHonorAward(index: number) {
+    markPreviewOutdated();
+
+    setForm((previousForm) => ({
+      ...previousForm,
+      honorAwards:
+        previousForm.honorAwards.length > 1
+          ? previousForm.honorAwards.filter((_, itemIndex) => itemIndex !== index)
+          : previousForm.honorAwards,
+    }));
+  }
+
+  function moveHonorAward(index: number, direction: "up" | "down") {
+    markPreviewOutdated();
+
+    setForm((previousForm) => {
+      const nextHonorAwards = [...previousForm.honorAwards];
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+      if (targetIndex < 0 || targetIndex >= nextHonorAwards.length) {
+        return previousForm;
+      }
+
+      [nextHonorAwards[index], nextHonorAwards[targetIndex]] = [
+        nextHonorAwards[targetIndex],
+        nextHonorAwards[index],
+      ];
+
+      return {
+        ...previousForm,
+        honorAwards: nextHonorAwards,
+      };
+    });
   }
 
   function updateSkillsField(field: keyof SkillsData, value: string) {
@@ -555,154 +784,196 @@ export default function Home() {
           </FormSection>
 
           <FormSection title="Education">
-            <InputField
-              label="University"
-              placeholder="Harvard University"
-              value={form.education.university}
-              onChange={(value) => updateEducationField("university", value)}
-            />
+            {form.education.map((item, index) => (
+              <div
+                key={index}
+                className="border border-gray-300 rounded-xl p-4 bg-gray-100 space-y-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-semibold text-gray-800">
+                    Education {index + 1}
+                  </h3>
 
-            <InputField
-              label="University Location"
-              placeholder="Cambridge, MA"
-              value={form.education.universityLocation}
-              onChange={(value) =>
-                updateEducationField("universityLocation", value)
-              }
-            />
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => moveEducation(index, "up")}
+                      disabled={index === 0}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↑ Up
+                    </button>
 
-            <InputField
-              label="Degree"
-              helperText="Example: B.Sc., B.A., M.Sc."
-              placeholder="B.Sc."
-              value={form.education.degree}
-              onChange={(value) => updateEducationField("degree", value)}
-            />
+                    <button
+                      onClick={() => moveEducation(index, "down")}
+                      disabled={index === form.education.length - 1}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↓ Down
+                    </button>
 
-            <InputField
-              label="Major / Concentration"
-              helperText="Example: Physics and Mathematics"
-              placeholder="Physics and Mathematics"
-              value={form.education.major}
-              onChange={(value) => updateEducationField("major", value)}
-            />
+                    {form.education.length > 1 && (
+                      <button
+                        onClick={() => removeEducation(index)}
+                        className="text-sm text-red-600 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-            <InputField
-              label="GPA"
-              helperText="Optional. Example: 4.80/5.00 or 3.85/4.00"
-              placeholder="4.80/5.00"
-              value={form.education.gpa}
-              onChange={(value) => updateEducationField("gpa", value)}
-            />
+                <InputField
+                  label="School / University / Institution"
+                  helperText="Examples: Harvard University, ETH Zürich, Study Abroad - University of Oxford, Previous University."
+                  placeholder="Harvard University"
+                  value={item.school}
+                  onChange={(value) => updateEducationField(index, "school", value)}
+                />
 
-            <InputField
-              label="Graduation Date"
-              helperText="Example: May 2027"
-              placeholder="May 2027"
-              value={form.education.graduationDate}
-              onChange={(value) =>
-                updateEducationField("graduationDate", value)
-              }
-            />
+                <InputField
+                  label="Location"
+                  placeholder="Cambridge, MA"
+                  value={item.location}
+                  onChange={(value) => updateEducationField(index, "location", value)}
+                />
 
-            <InputField
-              label="Thesis"
-              helperText="Optional. Leave blank if not applicable."
-              placeholder="Optional thesis title"
-              value={form.education.thesis}
-              onChange={(value) => updateEducationField("thesis", value)}
-            />
+                <InputField
+                  label="Degree / Program"
+                  helperText="Examples: B.Sc., M.Sc., Ph.D., Exchange Student, Transfer Coursework."
+                  placeholder="B.Sc."
+                  value={item.degree}
+                  onChange={(value) => updateEducationField(index, "degree", value)}
+                />
 
-            <TextAreaField
-              label="Relevant Coursework / Awards / Honors"
-              helperText="Optional. Use commas to separate courses, awards, or honors."
-              placeholder="Algorithms, Linear Algebra, Quantum Mechanics, Machine Learning"
-              value={form.education.relevantCoursework}
-              onChange={(value) =>
-                updateEducationField("relevantCoursework", value)
-              }
-            />
+                <InputField
+                  label="Major / Concentration"
+                  helperText="Example: Physics and Mathematics"
+                  placeholder="Physics and Mathematics"
+                  value={item.major}
+                  onChange={(value) => updateEducationField(index, "major", value)}
+                />
+
+                <InputField
+                  label="GPA"
+                  helperText="Optional. Example: 4.80/5.00 or 3.85/4.00"
+                  placeholder="4.80/5.00"
+                  value={item.gpa}
+                  onChange={(value) => updateEducationField(index, "gpa", value)}
+                />
+
+                <InputField
+                  label="Dates"
+                  helperText="Examples: May 2027, Aug 2026 - May 2028, 2024 - Present."
+                  placeholder="Month Year - Month Year"
+                  value={item.dates}
+                  onChange={(value) => updateEducationField(index, "dates", value)}
+                />
+
+                <InputField
+                  label="Thesis"
+                  helperText="Optional. Leave blank if not applicable."
+                  placeholder="Optional thesis title"
+                  value={item.thesis}
+                  onChange={(value) => updateEducationField(index, "thesis", value)}
+                />
+
+                <TextAreaField
+                  label="Relevant Coursework / Academic Details"
+                  helperText="Optional. Use commas to separate courses or details. Put honors and awards in the separate Honor & Awards section below."
+                  placeholder="Algorithms, Linear Algebra, Quantum Mechanics, Machine Learning"
+                  value={item.relevantCoursework}
+                  onChange={(value) =>
+                    updateEducationField(index, "relevantCoursework", value)
+                  }
+                />
+              </div>
+            ))}
+
+            <button
+              onClick={addEducation}
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-black transition"
+            >
+              Add Education
+            </button>
           </FormSection>
 
-          <FormSection title="Study Abroad">
-            <SectionHint text="Optional. Leave this whole section blank if not applicable; it will not appear in the PDF." />
+          <FormSection title="Honor & Awards">
+            <SectionHint text="Optional. Use this for awards, scholarships, competitions, fellowships, dean's list, or external honors that do not belong under one specific university." />
 
-            <InputField
-              label="Study Abroad Program / School"
-              placeholder="Study Abroad, University of Oxford"
-              value={form.education.studyAbroadSchool}
-              onChange={(value) =>
-                updateEducationField("studyAbroadSchool", value)
-              }
-            />
+            {form.honorAwards.map((item, index) => (
+              <div
+                key={index}
+                className="border border-gray-300 rounded-xl p-4 bg-gray-100 space-y-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-semibold text-gray-800">
+                    Honor / Award {index + 1}
+                  </h3>
 
-            <InputField
-              label="Study Abroad Location"
-              placeholder="Oxford, United Kingdom"
-              value={form.education.studyAbroadLocation}
-              onChange={(value) =>
-                updateEducationField("studyAbroadLocation", value)
-              }
-            />
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => moveHonorAward(index, "up")}
+                      disabled={index === 0}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↑ Up
+                    </button>
 
-            <InputField
-              label="Study Abroad Coursework"
-              placeholder="economics, politics, language, or other fields"
-              value={form.education.studyAbroadCoursework}
-              onChange={(value) =>
-                updateEducationField("studyAbroadCoursework", value)
-              }
-            />
+                    <button
+                      onClick={() => moveHonorAward(index, "down")}
+                      disabled={index === form.honorAwards.length - 1}
+                      className="text-sm text-gray-700 border border-gray-300 px-2 py-1 rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white"
+                    >
+                      ↓ Down
+                    </button>
 
-            <InputField
-              label="Study Abroad Dates"
-              helperText="Example: Jan 2026 - Jun 2026"
-              placeholder="Month Year - Month Year"
-              value={form.education.studyAbroadDates}
-              onChange={(value) =>
-                updateEducationField("studyAbroadDates", value)
-              }
-            />
-          </FormSection>
+                    {form.honorAwards.length > 1 && (
+                      <button
+                        onClick={() => removeHonorAward(index)}
+                        className="text-sm text-red-600 hover:text-red-800"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
 
-          <FormSection title="High School">
-            <SectionHint text="Optional for most university students. Leave blank if you do not want it in the PDF." />
+                <InputField
+                  label="Issuing Organization"
+                  placeholder="Harvard College, Ministry of Education, Mathematical Association of America"
+                  value={item.organization}
+                  onChange={(value) =>
+                    updateHonorAwardField(index, "organization", value)
+                  }
+                />
 
-            <InputField
-              label="High School Name"
-              placeholder="High School Name"
-              value={form.education.highSchoolName}
-              onChange={(value) =>
-                updateEducationField("highSchoolName", value)
-              }
-            />
+                <InputField
+                  label="Date"
+                  placeholder="2026"
+                  value={item.dates}
+                  onChange={(value) => updateHonorAwardField(index, "dates", value)}
+                />
 
-            <InputField
-              label="High School Location"
-              placeholder="City, State"
-              value={form.education.highSchoolLocation}
-              onChange={(value) =>
-                updateEducationField("highSchoolLocation", value)
-              }
-            />
+                <TextAreaField
+                  label="Awards"
+                  helperText='One award per line. Do not type "-", "•", or numbering; the system adds bullet points automatically.'
+                  placeholder={`Dean's List, Fall 2025 and Spring 2026
+First Prize, National Mathematics Competition
+Merit Scholarship for academic excellence`}
+                  value={item.bullets}
+                  onChange={(value) =>
+                    updateHonorAwardField(index, "bullets", value)
+                  }
+                />
+              </div>
+            ))}
 
-            <TextAreaField
-              label="High School Details"
-              placeholder="GPA, SAT/ACT scores, or academic honors"
-              value={form.education.highSchoolDetails}
-              onChange={(value) =>
-                updateEducationField("highSchoolDetails", value)
-              }
-            />
-
-            <InputField
-              label="High School Graduation Date"
-              placeholder="Graduation Date"
-              value={form.education.highSchoolGraduationDate}
-              onChange={(value) =>
-                updateEducationField("highSchoolGraduationDate", value)
-              }
-            />
+            <button
+              onClick={addHonorAward}
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-black transition"
+            >
+              Add Honor / Award
+            </button>
           </FormSection>
 
           <FormSection title="Experience">

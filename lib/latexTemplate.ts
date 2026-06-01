@@ -176,7 +176,7 @@ function renderEducationItem(item: EducationItem) {
     degreeLine ? `${degreeLine}\\\\` : "",
     gpaLine ? `${gpaLine}\\\\` : "",
     thesisLine ? `${thesisLine}\\\\` : "",
-    courseworkLine ? `${courseworkLine}\\\\` : "",
+    courseworkLine ? `${courseworkLine}` : "",
   ]
     .filter((line) => line.trim().length > 0)
     .join("\n");
@@ -188,9 +188,7 @@ function renderEducationSection(education: EducationItem[]) {
   if (validItems.length === 0) return "";
 
   return `${renderSectionTitle("EDUCATION")}
-${validItems.map((item) => renderEducationItem(item)).join("\n\\vspace{8pt}\n")}
-
-\\vspace{8pt}`;
+${validItems.map((item) => renderEducationItem(item)).join("\n\\vspace{8pt}\n")}`;
 }
 
 function renderHonorAwardItem(item: HonorAwardItem) {
@@ -200,10 +198,8 @@ function renderHonorAwardItem(item: HonorAwardItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  return `\\textbf{${organization.toUpperCase()}}${dates}\\\\
-${renderBulletList(item.bullets)}
-
-\\vspace{8pt}`;
+  return `\\textbf{${organization.toUpperCase()}}${dates}
+${renderBulletList(item.bullets)}`;
 }
 
 function renderHonorAwardsSection(honorAwards: HonorAwardItem[]) {
@@ -212,7 +208,7 @@ function renderHonorAwardsSection(honorAwards: HonorAwardItem[]) {
   if (validItems.length === 0) return "";
 
   return `${renderSectionTitle("HONOR \\& AWARDS")}
-${validItems.map((item) => renderHonorAwardItem(item)).join("\n")}`;
+${validItems.map((item) => renderHonorAwardItem(item)).join("\n\\vspace{4pt}\n")}`;
 }
 
 function renderExperienceItem(item: ExperienceItem) {

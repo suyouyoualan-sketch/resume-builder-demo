@@ -188,7 +188,7 @@ function renderEducationSection(education: EducationItem[]) {
   if (validItems.length === 0) return "";
 
   return `${renderSectionTitle("EDUCATION")}
-${validItems.map((item) => renderEducationItem(item)).join("\n\\vspace{8pt}\n")}`;
+${validItems.map((item) => renderEducationItem(item)).join("\n\\par\\vspace{6pt}\n")}`;
 }
 
 function renderHonorAwardItem(item: HonorAwardItem) {

@@ -226,14 +226,21 @@ function renderExperienceItem(item: ExperienceItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  const lines = [
-    `\\textbf{${organization.toUpperCase()}}${location}\\\\`,
-    position || dates ? `${position}${dates}\\\\` : "",
-    hasText(item.supervisor) ? `Supervisor: ${text(item.supervisor)}\\\\` : "",
-    renderBulletList(item.bullets),
+  const metadataLines = [
+    position || dates ? `${position}${dates}` : "",
+    hasText(item.supervisor) ? `Supervisor: ${text(item.supervisor)}` : "",
   ].filter((line) => line.trim().length > 0);
 
-  return `${lines.join("\n")}
+  const bulletList = renderBulletList(item.bullets);
+
+  const bodyLines = [
+    `\\textbf{${organization.toUpperCase()}}${location}`,
+    ...metadataLines,
+  ];
+
+  return `${bodyLines.join("\\\\\n")}
+${bulletList}
+
 \\vspace{8pt}`;
 }
 

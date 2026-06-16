@@ -699,7 +699,7 @@ export default function Home() {
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-8 p-4 lg:p-8 bg-gray-400">
       <section className="bg-gray-200 rounded-xl shadow-sm p-6 overflow-y-auto h-[95vh]">
         <div className="mb-8">
-          <h1 className="text-3xl text-gray-800 font-bold">Resume Builder</h1>
+          <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
 
           <p className="text-gray-600 mt-2">
             Build a Harvard-style ATS-friendly LaTeX resume.

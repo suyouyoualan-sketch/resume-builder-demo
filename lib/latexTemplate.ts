@@ -207,8 +207,10 @@ function renderHonorAwardsSection(honorAwards: HonorAwardItem[]) {
 
   if (validItems.length === 0) return "";
 
-  return `${renderSectionTitle("HONOR \\& AWARDS")}
-${validItems.map((item) => renderHonorAwardItem(item)).join("\n\\vspace{4pt}\n")}`;
+  return `${renderSectionTitle("HONORS \\& AWARDS")}
+${validItems.map((item) => renderHonorAwardItem(item)).join("\n\\vspace{4pt}\n")}
+
+\\vspace{8pt}`;
 }
 
 function renderExperienceItem(item: ExperienceItem) {
@@ -224,17 +226,14 @@ function renderExperienceItem(item: ExperienceItem) {
 
   const dates = hasText(item.dates) ? ` \\hfill ${text(item.dates)}` : "";
 
-  const roleLine = position || dates ? `${position}${dates}\\\\` : "";
+  const lines = [
+    `\\textbf{${organization.toUpperCase()}}${location}\\\\`,
+    position || dates ? `${position}${dates}\\\\` : "",
+    hasText(item.supervisor) ? `Supervisor: ${text(item.supervisor)}\\\\` : "",
+    renderBulletList(item.bullets),
+  ].filter((line) => line.trim().length > 0);
 
-  const supervisorLine = hasText(item.supervisor)
-    ? `Supervisor: ${text(item.supervisor)}\\\\`
-    : "";
-
-  return `\\textbf{${organization.toUpperCase()}}${location}\\\\
-${roleLine}
-${supervisorLine}
-${renderBulletList(item.bullets)}
-
+  return `${lines.join("\n")}
 \\vspace{8pt}`;
 }
 

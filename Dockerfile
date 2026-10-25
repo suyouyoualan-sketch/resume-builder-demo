@@ -32,7 +32,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     texlive-lang-cjk \
     texlive-lang-chinese \
     fonts-noto-cjk \
+    fonts-texgyre \
+    fontconfig \
     lmodern \
+    && fc-cache -f \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/public ./public

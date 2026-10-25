@@ -318,7 +318,7 @@ export function generateLatex(data: ResumeData) {
     hasText(data.phone) ? text(data.phone) : "",
   ].filter(Boolean);
 
-  return `\\documentclass[11pt]{article}
+  return `\\documentclass[10pt]{article}
 \\usepackage{graphicx}
 \\setlength{\\parindent}{0pt}
 \\usepackage{hyperref}
@@ -327,8 +327,8 @@ export function generateLatex(data: ResumeData) {
 \\usepackage{xeCJK}
 \\usepackage[left=1.06cm,top=1.7cm,right=1.06cm,bottom=0.49cm]{geometry}
 
-\\setmainfont{Latin Modern Roman}
-\\setsansfont{Latin Modern Sans}
+\\setmainfont{TeX Gyre Heros}
+\\setsansfont{TeX Gyre Heros}
 \\setmonofont{Latin Modern Mono}
 
 \\hypersetup{

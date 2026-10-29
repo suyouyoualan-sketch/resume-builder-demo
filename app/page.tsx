@@ -727,24 +727,20 @@ export default function Home() {
 
           <p className="text-gray-600 mt-2">
             Build a Harvard-style ATS-friendly LaTeX resume.
+            <br />
+            Brought to you by Youyou.
           </p>
 
           <p className="mb-2 text-gray-400">
             Supports English, Chinese, Korean, and Japanese input. For best ATS
             compatibility, we recommend writing your resume mainly in English.
-          </p>
-
-          <p className="mb-2 text-gray-400">
+            <br />
             Your progress is automatically saved in this browser.
           </p>
 
           <p className="mb-2 text-red-400">
             Beta version: please do not enter sensitive personal information during
             testing.
-          </p>
-
-          <p className="mb-2 text-gray-400">
-            Brought to you by Youyou.
           </p>
 
           <a

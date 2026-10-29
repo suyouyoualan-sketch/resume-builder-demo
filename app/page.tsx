@@ -1304,7 +1304,7 @@ Led weekly planning meetings and managed club communications`}
 
             <div className="pt-3 border-t border-gray-300 text-xs text-gray-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <p>
-                © {new Date().getFullYear()} Youyou. All rights reserved.
+                © {new Date().getFullYear()} Su Youyou. All rights reserved.
               </p>
 
               <div className="flex flex-wrap items-center gap-3">

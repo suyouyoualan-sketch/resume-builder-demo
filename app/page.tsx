@@ -719,8 +719,8 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-8 p-4 lg:p-8 bg-gray-400">
-      <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-[95vh] flex flex-col">
+    <main className="h-dvh overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
+      <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0 flex flex-col">
         <div className="flex-1 overflow-y-auto p-6">
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
@@ -1337,7 +1337,7 @@ Led weekly planning meetings and managed club communications`}
         </div>
       </section>
 
-      <section className="hidden lg:flex flex-col bg-white rounded-xl shadow-sm overflow-hidden h-[95vh]">
+      <section className="hidden lg:flex flex-col bg-white rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0">
         {pdfUrl ? (
           <>
             <div className="flex items-center justify-between gap-3 px-4 py-2 border-b bg-gray-100">

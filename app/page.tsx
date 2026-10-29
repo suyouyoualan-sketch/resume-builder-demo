@@ -114,77 +114,100 @@ const emptyForm: ResumeForm = {
 const STORAGE_KEY = "resume-builder-form-data";
 
 const exampleForm: ResumeForm = {
-  name: "Alex Chen",
-  email: "alex.chen@college.edu",
-  phone: "+1 617 555 0123",
-  address: "123 Harvard Yard",
-  cityStateZip: "Cambridge, MA 02138",
+  name: "Harry James Potter",
+  email: "harry.potter@owlpost.example",
+  phone: "",
+  address: "12 Grimmauld Place",
+  cityStateZip: "London, United Kingdom",
   education: [
     {
-      school: "Harvard University",
-      location: "Cambridge, MA",
-      degree: "B.A.",
-      major: "Economics, Secondary in Computer Science",
-      gpa: "3.85/4.00",
-      dates: "May 2027",
-      thesis: "Market Design for Digital Platforms",
-      relevantCoursework:
-        "Data Structures, Econometrics, Linear Algebra, Algorithms, Corporate Finance",
-    },
-    {
-      school: "Study Abroad, University of Oxford",
-      location: "Oxford, United Kingdom",
-      degree: "Exchange Student",
-      major: "Economic History, Political Theory, and Statistics",
+      school: "Hogwarts School of Witchcraft and Wizardry",
+      location: "Highlands, Scotland",
+      degree: "Secondary Magical Education",
+      major: "Defence Against the Dark Arts, Gryffindor House",
       gpa: "",
-      dates: "Jan 2026 - Jun 2026",
+      dates: "Sep 1991 - Jun 1997",
       thesis: "",
-      relevantCoursework: "",
+      relevantCoursework:
+        "Defence Against the Dark Arts, Charms, Transfiguration, Potions, Herbology, Care of Magical Creatures",
     },
   ],
   honorAwards: [
     {
-      organization: "Harvard College",
-      dates: "2026",
+      organization: "Hogwarts School of Witchcraft and Wizardry",
+      dates: "1993",
       bullets:
-        "John Harvard Scholarship for academic achievement\nDean's List, Fall 2025 and Spring 2026",
+        "Received the Special Award for Services to the School\nHelped protect the school and its students from a dangerous magical threat",
+    },
+    {
+      organization: "International Triwizard Tournament",
+      dates: "1994 - 1995",
+      bullets:
+        "Selected as Hogwarts champion in an international magical competition\nCompleted three advanced challenges involving dragons, underwater rescue, and an enchanted maze",
+    },
+    {
+      organization: "Ministry of Magic",
+      dates: "1998",
+      bullets:
+        "Awarded the Order of Merlin, First Class, for exceptional courage and service to the wizarding community",
     },
   ],
   experience: [
     {
-      organization: "Three Languages of Quantum Mechanics (URECA Programme)",
-      location: "Singapore",
-      positionTitle: "Research Student",
-      supervisor: "Prof. François Gay-Balmaz",
-      dates: "May 2026 - Aug 2026",
+      organization: "Horcrux Search and Recovery Mission",
+      location: "United Kingdom",
+      positionTitle: "Field Operative",
+      supervisor: "Albus Dumbledore",
+      dates: "Jun 1997 - May 1998",
       bullets:
-        "Studied the equivalence between the Schrödinger, Heisenberg, and interaction pictures\nReviewed mathematical formulations of quantum mechanics using operators, states, and time evolution\nPrepared structured notes and derivations for a research-style undergraduate project",
+        "Located and helped destroy multiple concealed dark magical artefacts\nConducted high-risk field operations while evading hostile forces and government surveillance\nCollaborated with a three-person team to research clues, solve protective enchantments, and complete time-sensitive objectives\nContributed directly to the defeat of Lord Voldemort during the Battle of Hogwarts",
     },
     {
-      organization: "Northstar Ventures",
-      location: "Remote",
-      positionTitle: "Summer Analyst",
-      supervisor: "",
-      dates: "Jun 2025 - Aug 2025",
+      organization: "Order of the Phoenix",
+      location: "United Kingdom",
+      positionTitle: "Resistance Member",
+      supervisor: "Sirius Black and Albus Dumbledore",
+      dates: "Jun 1995 - May 1998",
       bullets:
-        "Evaluated 30+ early-stage startups across fintech, education technology, and AI infrastructure\nPrepared market maps and competitor analyses for investment committee discussions\nCreated financial summaries using Excel to compare revenue models and growth assumptions",
+        "Supported defensive operations against Voldemort and the Death Eaters\nParticipated in rescue missions at the Department of Mysteries and Malfoy Manor\nProtected students and civilians during multiple large-scale magical conflicts\nDemonstrated sound judgment and resilience in rapidly changing, high-pressure situations",
+    },
+    {
+      organization: "Triwizard Tournament",
+      location: "Hogwarts, Scotland",
+      positionTitle: "Hogwarts Champion",
+      supervisor: "",
+      dates: "Oct 1994 - Jun 1995",
+      bullets:
+        "Prepared independently for complex magical challenges involving unfamiliar threats\nSummoned and controlled a broom under pressure to retrieve an objective guarded by a dragon\nUsed advanced underwater magic to complete a time-limited rescue operation\nNavigated an enchanted maze while responding to unpredictable obstacles",
     },
   ],
   leadership: [
     {
-      organization: "Undergraduate Consulting Club",
-      location: "Cambridge, MA",
-      role: "Project Lead",
-      dates: "Sep 2024 - Present",
+      organization: "Dumbledore's Army",
+      location: "Hogwarts, Scotland",
+      role: "Founder and Lead Instructor",
+      dates: "Oct 1995 - Jun 1996",
       bullets:
-        "Led a 5-student team advising a local nonprofit on donor engagement strategy\nCoordinated weekly client meetings and delivered final recommendations to senior management",
+        "Founded and led a student organization dedicated to practical defensive magic\nDesigned and delivered recurring lessons in shield charms, disarming spells, Patronus charms, and duelling strategy\nTrained more than 20 students with different levels of magical experience\nBuilt a collaborative and discreet organization under restrictive school policies",
+    },
+    {
+      organization: "Gryffindor Quidditch Team",
+      location: "Hogwarts, Scotland",
+      role: "Seeker and Team Captain",
+      dates: "Sep 1991 - Jun 1997",
+      bullets:
+        "Served as the youngest Hogwarts house-team player in more than a century\nLed team practices, coordinated match strategy, and supported player development\nWon multiple decisive matches through fast decision-making and precise aerial manoeuvring",
     },
   ],
   skills: {
-    technical: "Python, SQL, Excel, TypeScript, R, LaTeX, Git",
-    language: "English native, Mandarin fluent, French intermediate",
-    laboratory: "",
-    interests: "Tennis, documentary filmmaking, behavioral economics, specialty coffee",
+    technical:
+      "Defensive magic, Patronus Charm, Disarming Charm, Shield Charm, duelling, magical investigation, broomstick flight",
+    language:
+      "English native, Parseltongue",
+    laboratory:
+      "Potion preparation, magical plant handling, dark artefact identification, spell experimentation",
+    interests:
+      "Quidditch, magical history, flying, treacle tart, supporting young witches and wizards",
   },
 };
 
@@ -710,13 +733,17 @@ export default function Home() {
             compatibility, we recommend writing your resume mainly in English.
           </p>
 
-          <p className="mb-3 text-sm text-gray-400">
+          <p className="mb-2 text-gray-400">
             Your progress is automatically saved in this browser.
           </p>
 
-          <p className="mb-3 font-medium text-red-400">
+          <p className="mb-2 text-red-400">
             Beta version: please do not enter sensitive personal information during
             testing.
+          </p>
+
+          <p className="mb-2 text-gray-400">
+            Brought to you by Youyou.
           </p>
 
           <a

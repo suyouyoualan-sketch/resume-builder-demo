@@ -727,20 +727,24 @@ export default function Home() {
 
           <p className="text-gray-600 mt-2">
             Build a Harvard-style ATS-friendly LaTeX resume.
-            <br />
-            Brought to you by Youyou.
           </p>
 
           <p className="mb-2 text-gray-400">
             Supports English, Chinese, Korean, and Japanese input. For best ATS
             compatibility, we recommend writing your resume mainly in English.
-            <br />
+          </p>
+
+          <p className="mb-2 text-gray-400">
             Your progress is automatically saved in this browser.
           </p>
 
           <p className="mb-2 text-red-400">
             Beta version: please do not enter sensitive personal information during
             testing.
+          </p>
+
+          <p className="mb-2 text-gray-400">
+            Brought to you by Youyou.
           </p>
 
           <a
@@ -1301,6 +1305,39 @@ Led weekly planning meetings and managed club communications`}
               PDF preview is best viewed on desktop. On mobile, generate and
               download the PDF to inspect the result.
             </p>
+
+            <div className="pt-3 border-t border-gray-300 text-xs text-gray-500 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <p>
+                © {new Date().getFullYear()} Youyou. All rights reserved.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href="mailto:suyouyoualan@gmail.com"
+                  className="text-gray-700 underline hover:text-black transition"
+                >
+                  suyouyoualan@gmail.com
+                </a>
+
+                <a
+                  href="https://github.com/suyouyoualan-sketch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 underline hover:text-black transition"
+                >
+                  GitHub
+                </a>
+
+                <a
+                  href="https://forms.gle/ksLr1G9649cXZfDi9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 underline hover:text-black transition"
+                >
+                  Contact / Feedback
+                </a>
+              </div>
+            </div>
         </div>
       </section>
 

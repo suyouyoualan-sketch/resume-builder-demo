@@ -720,7 +720,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-8 p-4 lg:p-8 bg-gray-400">
-      <section className="bg-gray-200 rounded-xl shadow-sm p-6 overflow-y-auto h-[95vh]">
+      <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-[95vh] flex flex-col">
+        <div className="flex-1 overflow-y-auto p-6">
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
 
@@ -1244,7 +1245,10 @@ Led weekly planning meetings and managed club communications`}
             />
           </FormSection>
 
-          <div className="sticky bottom-0 bg-gray-200 py-4 space-y-3">
+          </div>
+        </div>
+
+        <div className="shrink-0 border-t border-gray-300 bg-gray-200 px-6 py-4 space-y-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={generatePDF}
@@ -1301,7 +1305,6 @@ Led weekly planning meetings and managed club communications`}
               PDF preview is best viewed on desktop. On mobile, generate and
               download the PDF to inspect the result.
             </p>
-          </div>
         </div>
       </section>
 

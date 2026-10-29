@@ -1,3 +1,18 @@
+## Some comments
+
+Hi, to whoever reads this (I never expect anyone except me to read this though), this is Youyou presenting the ** Easy CV ** to you!
+
+This is an easy-to-use compiler, you only input your information, no formatting, no fonts, this website handles all the less important things for you and leaves you focusing on the thing that really matters, ** your ** resume.
+
+Ever since I built this website, I have never open my Overleaf CV template again. Since it is first set up, I have done many changes, local saving, line-spacing, font, etc. I would say it is capable of making a very professional CV now.
+
+Anyway, I believe you will like this website and, go have a try!
+
+Live demo at:
+https://resume-builder-demo-production.up.railway.app/
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

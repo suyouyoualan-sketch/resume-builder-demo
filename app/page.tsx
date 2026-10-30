@@ -743,7 +743,7 @@ export default function Home() {
   return (
     <main className="h-dvh overflow-hidden overscroll-none grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
       <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0 flex flex-col">
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-6">
+        <div className="macos-scrollbar flex-1 min-h-0 overflow-y-auto overscroll-contain p-6">
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
 
@@ -1391,7 +1391,7 @@ Led weekly planning meetings and managed club communications`}
               </div>
             </div>
 
-            <div className="flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300">
+            <div className="macos-scrollbar flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300">
               <iframe
                 src={`${pdfUrl}#toolbar=0`}
                 className="border-0 bg-white"
@@ -1410,6 +1410,48 @@ Led weekly planning meetings and managed club communications`}
           </div>
         )}
       </section>
+
+      <style jsx global>{`
+        .macos-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(60, 60, 67, 0.3) transparent;
+        }
+
+        .macos-scrollbar:hover {
+          scrollbar-color: rgba(60, 60, 67, 0.48) transparent;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar-thumb {
+          min-height: 36px;
+          border: 1px solid transparent;
+          border-radius: 999px;
+          background: rgba(60, 60, 67, 0.3);
+          background-clip: padding-box;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(60, 60, 67, 0.48);
+          background-clip: padding-box;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar-thumb:active {
+          background: rgba(60, 60, 67, 0.62);
+          background-clip: padding-box;
+        }
+
+        .macos-scrollbar::-webkit-scrollbar-corner {
+          background: transparent;
+        }
+      `}</style>
     </main>
   );
 }

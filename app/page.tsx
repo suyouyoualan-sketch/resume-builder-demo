@@ -754,7 +754,6 @@ export default function Home() {
   return (
     <main className="h-dvh overflow-hidden overscroll-none grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
       <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0 flex flex-col">
-        <div className="macos-scrollbar flex-1 min-h-0 overflow-y-auto overscroll-contain p-6">
         <div className={`${styles.macosScrollbar} flex-1 min-h-0 overflow-y-auto overscroll-contain p-6`}>
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
@@ -1374,29 +1373,23 @@ Led weekly planning meetings and managed club communications`}
       <section className="hidden lg:flex flex-col bg-white rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0">
         {pdfUrl ? (
           <>
-            <div className="flex items-center justify-between gap-3 px-4 py-2 border-b bg-gray-100">
-              <span className="text-sm text-gray-600">
             <div className="flex items-center justify-between gap-3 border-b border-gray-300 bg-gray-200 px-4 py-2.5">
               <span className="text-sm font-medium tabular-nums text-gray-600">
                 Preview zoom: {Math.round(previewZoom * 100)}%
               </span>
 
-              <div className="flex gap-2">
               <div className="inline-flex items-center gap-0.5 rounded-xl border border-black/10 bg-white/70 p-1 shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.06)] backdrop-blur-md">
                 <button
                   onClick={zoomOutPreview}
-                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                   aria-label="Zoom out"
                   title="Zoom out"
                   className="flex h-8 min-w-8 items-center justify-center rounded-lg px-2 text-base font-medium text-gray-700 transition duration-150 hover:bg-white hover:text-black hover:shadow-sm active:scale-[0.96]"
                 >
-                  -
                   −
                 </button>
 
                 <button
                   onClick={resetPreviewZoom}
-                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                   className="flex h-8 min-w-14 items-center justify-center rounded-lg px-3 text-xs font-semibold text-gray-700 transition duration-150 hover:bg-white hover:text-black hover:shadow-sm active:scale-[0.96]"
                 >
                   Reset
@@ -1404,7 +1397,6 @@ Led weekly planning meetings and managed club communications`}
 
                 <button
                   onClick={zoomInPreview}
-                  className="text-sm text-gray-900 border border-gray-300 px-3 py-1 rounded bg-white hover:bg-gray-100 transition"
                   aria-label="Zoom in"
                   title="Zoom in"
                   className="flex h-8 min-w-8 items-center justify-center rounded-lg px-2 text-base font-medium text-gray-700 transition duration-150 hover:bg-white hover:text-black hover:shadow-sm active:scale-[0.96]"
@@ -1414,17 +1406,6 @@ Led weekly planning meetings and managed club communications`}
               </div>
             </div>
 
-            <div className="macos-scrollbar flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300">
-              <iframe
-                src={`${pdfUrl}#toolbar=0`}
-                className="border-0 bg-white"
-                style={{
-                  width: `${100 / previewZoom}%`,
-                  height: `${100 / previewZoom}%`,
-                  transform: `scale(${previewZoom})`,
-                  transformOrigin: "top left",
-                }}
-              />
             <div className={`${styles.macosScrollbar} flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300`}>
               <PdfPreview fileUrl={pdfUrl} zoom={previewZoom} />
             </div>
@@ -1436,47 +1417,6 @@ Led weekly planning meetings and managed club communications`}
         )}
       </section>
 
-      <style jsx global>{`
-        .macos-scrollbar {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(60, 60, 67, 0.3) transparent;
-        }
-
-        .macos-scrollbar:hover {
-          scrollbar-color: rgba(60, 60, 67, 0.48) transparent;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar {
-          width: 6px;
-          height: 6px;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar-thumb {
-          min-height: 36px;
-          border: 1px solid transparent;
-          border-radius: 999px;
-          background: rgba(60, 60, 67, 0.3);
-          background-clip: padding-box;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(60, 60, 67, 0.48);
-          background-clip: padding-box;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar-thumb:active {
-          background: rgba(60, 60, 67, 0.62);
-          background-clip: padding-box;
-        }
-
-        .macos-scrollbar::-webkit-scrollbar-corner {
-          background: transparent;
-        }
-      `}</style>
     </main>
   );
 }

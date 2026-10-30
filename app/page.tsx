@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
+import styles from "./MacosScrollbar.module.css";
 
 const PdfPreview = dynamic(() => import("./PdfPreview"), {
   ssr: false,
@@ -754,6 +755,7 @@ export default function Home() {
     <main className="h-dvh overflow-hidden overscroll-none grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
       <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0 flex flex-col">
         <div className="macos-scrollbar flex-1 min-h-0 overflow-y-auto overscroll-contain p-6">
+        <div className={`${styles.macosScrollbar} flex-1 min-h-0 overflow-y-auto overscroll-contain p-6`}>
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
 
@@ -1423,6 +1425,7 @@ Led weekly planning meetings and managed club communications`}
                   transformOrigin: "top left",
                 }}
               />
+            <div className={`${styles.macosScrollbar} flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300`}>
               <PdfPreview fileUrl={pdfUrl} zoom={previewZoom} />
             </div>
           </>

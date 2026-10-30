@@ -1,0 +1,39 @@
+.macosScrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(60, 60, 67, 0.3) transparent;
+}
+
+.macosScrollbar:hover {
+  scrollbar-color: rgba(60, 60, 67, 0.48) transparent;
+}
+
+.macosScrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.macosScrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.macosScrollbar::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: rgba(60, 60, 67, 0.3);
+  background-clip: padding-box;
+}
+
+.macosScrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 60, 67, 0.48);
+  background-clip: padding-box;
+}
+
+.macosScrollbar::-webkit-scrollbar-thumb:active {
+  background: rgba(60, 60, 67, 0.62);
+  background-clip: padding-box;
+}
+
+.macosScrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}

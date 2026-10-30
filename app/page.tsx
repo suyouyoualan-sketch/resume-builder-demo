@@ -313,6 +313,28 @@ function normalizeSavedForm(savedData: Partial<ResumeForm> & { education?: unkno
 }
 
 export default function Home() {
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+
+    const previousRootOverflow = root.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousRootOverscroll = root.style.overscrollBehavior;
+    const previousBodyOverscroll = body.style.overscrollBehavior;
+
+    root.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    root.style.overscrollBehavior = "none";
+    body.style.overscrollBehavior = "none";
+
+    return () => {
+      root.style.overflow = previousRootOverflow;
+      body.style.overflow = previousBodyOverflow;
+      root.style.overscrollBehavior = previousRootOverscroll;
+      body.style.overscrollBehavior = previousBodyOverscroll;
+    };
+  }, []);
+
   const [form, setForm] = useState<ResumeForm>(emptyForm);
 
   useEffect(() => {
@@ -719,9 +741,9 @@ export default function Home() {
   }
 
   return (
-    <main className="h-dvh overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
+    <main className="h-dvh overflow-hidden overscroll-none grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 lg:p-8 bg-gray-400">
       <section className="bg-gray-200 rounded-xl shadow-sm overflow-hidden h-full min-h-0 min-w-0 flex flex-col">
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-6">
         <div className="mb-8">
           <h1 className="text-3xl text-gray-800 font-bold">EasyCV</h1>
 
@@ -1369,7 +1391,7 @@ Led weekly planning meetings and managed club communications`}
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto bg-gray-300">
+            <div className="flex-1 min-h-0 overflow-auto overscroll-contain bg-gray-300">
               <iframe
                 src={`${pdfUrl}#toolbar=0`}
                 className="border-0 bg-white"
